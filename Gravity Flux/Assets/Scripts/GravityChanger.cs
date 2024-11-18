@@ -4,13 +4,14 @@ public class RandomGravityChanger : MonoBehaviour
 {
     [SerializeField] private float minGravityScale = -2f;
     [SerializeField] private float maxGravityScale = 2f;
-    [SerializeField] private float changeInterval = 3f;
-    [SerializeField] private float returnToOriginalInterval = 5f;
+    public float changeInterval = 3f;
+    
 
     private float originalGravityScale;
     private Rigidbody2D[] allRigidbodies;
-    private float changeTimer;
     private bool gravityReset = true;
+
+    public float changeTimer;
 
     private void Start()
     {
@@ -32,7 +33,12 @@ public class RandomGravityChanger : MonoBehaviour
         if (changeTimer <= 0f && gravityReset)
         {
             ChangeGravityScale();
-            changeTimer = changeInterval + returnToOriginalInterval;
+            changeTimer = changeInterval;
+        }
+        if (changeTimer <= 0f && !gravityReset)
+        {
+            ResetGravityScale();
+            changeTimer = changeInterval;
         }
     }
     
@@ -48,7 +54,7 @@ public class RandomGravityChanger : MonoBehaviour
             }
             Debug.Log($"Gravity scale changed to: {newGravityScale}");
 
-            Invoke(nameof(ResetGravityScale), returnToOriginalInterval);
+            //Invoke(nameof(ResetGravityScale), changeInterval);
             gravityReset = false;
         }
     }
