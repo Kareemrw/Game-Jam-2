@@ -10,7 +10,7 @@ public class Key : MonoBehaviour
         {
             Debug.Log("Key Picked Up");
             door.GetComponent<BoxCollider2D>().enabled = false;
-            this.gameObject.SetActive(false)
+            this.gameObject.SetActive(false);
         }
     }
 

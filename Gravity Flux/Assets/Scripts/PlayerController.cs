@@ -12,7 +12,11 @@ public class PlayerCont : MonoBehaviour
     [SerializeField] private Transform roofCheck;
     [SerializeField] private LayerMask groundLayer;
 
-     void Update()
+    private int currentHearts = 3; 
+
+    public UI uiScript; 
+
+    void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
@@ -34,7 +38,6 @@ public class PlayerCont : MonoBehaviour
         }
 
         Flip();
-        // Debug to check if touching roof
     }
 
     private void FixedUpdate()
@@ -51,6 +54,7 @@ public class PlayerCont : MonoBehaviour
     {
         return Physics2D.OverlapCircle(roofCheck.position, 0.2f, groundLayer);
     }
+
     private void Flip()
     {
         if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
@@ -59,6 +63,31 @@ public class PlayerCont : MonoBehaviour
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
+        }
+    }
+
+    // Method to handle taking damage
+    private void TakeDamage()
+    {
+        if (currentHearts > 0)
+        {
+            currentHearts--;
+            uiScript.TakeDamage(); 
+            Debug.Log("Player took damage. Remaining hearts: " + currentHearts);
+        }
+
+        if (currentHearts <= 0)
+        {
+            Debug.Log("Game Over");
+        }
+    }
+
+    // Collision detection with enemy
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage();
         }
     }
 }

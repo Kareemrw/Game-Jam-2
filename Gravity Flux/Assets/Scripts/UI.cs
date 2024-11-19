@@ -1,23 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; 
 using TMPro;
 
 public class UI : MonoBehaviour
 {
-    TextMeshProUGUI textMeshPro;
-    public TextMeshProUGUI gravTimer;
-    public RandomGravityChanger gravChanger;
-    // Start is called before the first frame update
+    public TextMeshProUGUI gravTimer; 
+    public RandomGravityChanger gravChanger; 
+
+    public Image[] heartIcons; 
+    private int currentHearts;
+
     void Start()
     {
-        textMeshPro = GetComponent<TextMeshProUGUI>();
-        gravTimer.text = "Gravity Change in " + (gravChanger.changeTimer);
+        currentHearts = heartIcons.Length; 
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        gravTimer.text = "Gravity Change in " + (gravChanger.changeTimer);
+        gravTimer.text = "Gravity Change in " + Mathf.Ceil(gravChanger.changeTimer).ToString();
+    }
+
+    public void TakeDamage()
+    {
+        if (currentHearts > 0)
+        {
+            currentHearts--;
+            heartIcons[currentHearts].enabled = false; 
+        }
+        if (currentHearts <= 0)
+        {
+            Debug.Log("Game Over");
+        }
     }
 }
